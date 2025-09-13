@@ -1,0 +1,552 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choose a Variant Tabs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    .trigger-modal {
+      background: #782af3;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+    }
+
+    .variant-modal {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 900px;
+      width: 90%;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: none;
+      max-height: 90vh;
+      overflow: hidden;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      display: none;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+      z-index: 1;
+    }
+
+    .variant-title h2 {
+      font-size: larger;
+      font-weight: 600;
+    }
+
+    .variant-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .variant-header img {
+      width: 50px;
+      height: 50px;
+      border-radius: .5rem;
+      object-fit: cover;
+    }
+
+    .learn-btn {
+      background: linear-gradient(90deg, #6a3093, #a044ff, #6a3093);
+      background-size: 200% 200%;
+      animation: gradientMove 1.5s linear infinite;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      font-size: 14px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    @keyframes gradientMove {
+      100% {
+        background-position: 0% 50%;
+      }
+      0% {
+        background-position: 200% 50%;
+      }
+    }
+
+    .option-btn {
+      border: 1px solid #ddd;
+      padding: 6px 12px;
+      border-radius: 4px;
+      background: white;
+      transition: 0.3s;
+      width: 19%;
+      font-size: 14px;
+    }
+
+    .option-btn.active,
+    .option-btn:hover {
+      background: #ddd;
+      border-color: #ddd;
+      color: #6a3093;
+    }
+
+    .confirm-btn {
+      background: #782af3;
+      color: white;
+      padding: 20px 12px;
+      border-radius: 8px;
+      font-size: 18px;
+      border: none;
+      width: 100%;
+    }
+
+    .variant-header h6 {
+      font-size: 14px;
+    }
+
+    .thikness-sec {
+      display: flex;
+      align-items: center;
+    }
+
+    .thikness-sec img {
+      width: 50px;
+      height: 50px;
+    }
+
+    span#thikness-size {
+      font-size: 14px;
+      color: #6a3093;
+    }
+
+    .thik-content p {
+      font-size: 14px;
+    }
+
+    .variant-box {
+      height: 65vh;
+      overflow-y: auto;
+    }
+
+    .tab-pan input {
+      height: 45px;
+    }
+
+    .badge-input {
+      position: absolute;
+      background: #433487;
+      color: white;
+      padding: 2px 10px;
+      border-radius: 18px;
+      font-size: 14px;
+      top: -12px;
+      left: 0px;
+    }
+    
+    .form-control {
+      text-align: center !important;
+      padding: 10px;
+    }
+    
+    #lengthInput::placeholder,
+    #breadthInput::placeholder {
+      text-align: center;
+    }
+    
+    .form-control.text-center {
+      text-align: center;
+    }
+    
+    .form-control.error {
+      border:2px solid red !important;
+    }
+    
+    .form-control:focus {
+      box-shadow: unset !important;
+    }
+
+    @media (max-width: 768px) {
+      .variant-modal {
+        padding: 15px;
+        border-radius: 15px;
+      }
+      
+      .variant-box {
+        height: 60vh;
+      }
+      
+      .option-btn {
+        width: 48%;
+        margin-bottom: 5px;
+      }
+      
+      .variant-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .variant-header h6 {
+        font-size: 13px;
+      }
+      
+      .thikness-sec img {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .confirm-btn {
+        padding: 15px 12px;
+        font-size: 16px;
+      }
+      
+      .variant-title h2 {
+        font-size: 18px;
+        padding-right: 30px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .variant-modal {
+        padding: 10px;
+        width: 95%;
+      }
+      
+      .option-btn {
+        width: 100%;
+      }
+      
+      .variant-box {
+        height: 70vh;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <button class="trigger-modal">Choose Mattress Variant</button>
+
+  <div class="modal-backdrop"></div>
+  
+  <div class="variant-modal">
+    <button class="modal-close">&times;</button>
+    
+    <div class="variant-title">
+      <h2>Choose a Variant</h2>
+    </div>
+    <div class="overflow-y-auto variant-box">
+      <div class="variant-header">
+        <img src="https://ik.imagekit.io/2xkwa8s1i/img/product-thumbnails/WOMFM_Classic.jpg" alt="Product">
+        <div class="d-flex align-items-center ">
+          <h6 class="mb-0 ">ShapeSense Orthopedic Classic Memory Foam Mattress <span> | 10 Years Warranty</span></h6>
+        </div>
+      </div>
+
+      <button class="learn-btn">
+        <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="rgba(196,1,1,1)">
+            <path
+              d="M19.6069 6.99482C19.5307 6.69695 19.3152 6.47221 19.0684 6.40288C18.6299 6.28062 16.501 6 12.001 6C7.50098 6 5.37252 6.28073 4.93225 6.40323C4.68776 6.47123 4.4723 6.69593 4.3951 6.99482C4.2863 7.41923 4.00098 9.19595 4.00098 12C4.00098 14.804 4.2863 16.5808 4.3954 17.0064C4.47126 17.3031 4.68676 17.5278 4.93251 17.5968C5.37252 17.7193 7.50098 18 12.001 18C16.501 18 18.6299 17.7194 19.0697 17.5968C19.3142 17.5288 19.5297 17.3041 19.6069 17.0052C19.7157 16.5808 20.001 14.8 20.001 12C20.001 9.2 19.7157 7.41923 19.6069 6.99482ZM21.5442 6.49818C22.001 8.28 22.001 12 22.001 12C22.001 12 22.001 15.72 21.5442 17.5018C21.2897 18.4873 20.547 19.2618 19.6056 19.5236C17.8971 20 12.001 20 12.001 20C12.001 20 6.10837 20 4.39637 19.5236C3.45146 19.2582 2.70879 18.4836 2.45774 17.5018C2.00098 15.72 2.00098 12 2.00098 12C2.00098 12 2.00098 8.28 2.45774 6.49818C2.71227 5.51273 3.45495 4.73818 4.39637 4.47636C6.10837 4 12.001 4 12.001 4C12.001 4 17.8971 4 19.6056 4.47636C20.5505 4.74182 21.2932 5.51636 21.5442 6.49818ZM10.001 15.5V8.5L16.001 12L10.001 15.5Z">
+            </path>
+          </svg> Learn how to measure the right mattress size</span>
+        <span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" fill="white">
+            <path
+              d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z">
+            </path>
+          </svg>
+        </span>
+      </button>
+
+      <div class="mb-3">
+        <h6>Size Group</h6>
+        <div class="d-flex flex-wrap gap-2" id="sizeTabs">
+          <button class="option-btn active" data-target="tab-single">Single</button>
+          <button class="option-btn" data-target="tab-diwan">Diwan</button>
+          <button class="option-btn" data-target="tab-queen">Queen</button>
+          <button class="option-btn" data-target="tab-king">King</button>
+          <button class="option-btn" data-target="tab-custom">Custom</button>
+        </div>
+      </div>
+
+      <div id="tabContents">
+        <div class="tab-pane" id="tab-single" style="display:block;">
+          <h6>Dimension</h6>
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <button class="option-btn active">72×60 Inch</button>
+            <button class="option-btn">75×60 Inch</button>
+            <button class="option-btn ">72×60 Inch</button>
+            <button class="option-btn">75×60 Inch</button>
+            <button class="option-btn ">72×60 Inch</button>
+            <button class="option-btn">75×60 Inch</button>
+            <button class="option-btn ">72×60 Inch</button>
+            <button class="option-btn">75×60 Inch</button>
+            <button class="option-btn ">72×60 Inch</button>
+            <button class="option-btn">75×60 Inch</button>
+            <button class="option-btn ">72×60 Inch</button>
+            <button class="option-btn">75×60 Inch</button>
+          </div>
+          <h6>Thickness</h6>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="option-btn">5</button>
+            <button class="option-btn active">6</button>
+            <button class="option-btn">8</button>
+            <button class="option-btn">10</button>
+          </div>
+          <div class="mt-3 thikness-sec">
+            <img src="https://cdn-icons-gif.flaticon.com/17093/17093420.gif">
+            <div class="thik-content">
+              <span class="thikness-size" id="thikness-size">(8 inch Thickness)</span>
+              <p class="m-0">Best if the sleepers weighs between than <span id="thikness-weight">65 kg - 80 kg</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="tab-diwan" style="display:none;">
+          <h6>Dimension</h6>
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <button class="option-btn active">72×66 Inch</button>
+            <button class="option-btn">75×66 Inch</button>
+            <button class="option-btn">75×66 Inch</button>
+            <button class="option-btn">75×66 Inch</button>
+            <button class="option-btn">75×66 Inch</button>
+            <button class="option-btn">75×66 Inch</button>
+          </div>
+          <h6>Thickness</h6>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="option-btn">4</button>
+            <button class="option-btn active">8</button>
+          </div>
+          <div class="mt-3 thikness-sec">
+            <img src="https://cdn-icons-gif.flaticon.com/17093/17093420.gif">
+            <div class="thik-content">
+              <span class="thikness-size" id="thikness-size">(8 inch Thickness)</span>
+              <p class="m-0">Best if the sleepers weighs between than <span id="thikness-weight">65 kg - 80 kg</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="tab-queen" style="display:none;">
+          <h6>Dimension</h6>
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <button class="option-btn">72×66 Inch</button>
+            <button class="option-btn active">78×60 Inch</button>
+          </div>
+          <h6>Thickness</h6>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="option-btn">6</button>
+            <button class="option-btn active">10</button>
+          </div>
+          <div class="mt-3 thikness-sec">
+            <img src="https://cdn-icons-gif.flaticon.com/17093/17093420.gif">
+            <div class="thik-content">
+              <span class="thikness-size" id="thikness-size">(8 inch Thickness)</span>
+              <p class="m-0">Best if the sleepers weighs between than <span id="thikness-weight">65 kg - 80 kg</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="tab-king" style="display:none;">
+          <h6>Dimension</h6>
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <button class="option-btn active">84×60 Inch</button>
+          </div>
+          <h6>Thickness</h6>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="option-btn">8</button>
+            <button class="option-btn active">12</button>
+          </div>
+          <div class="mt-3 thikness-sec">
+            <img src="https://cdn-icons-gif.flaticon.com/17093/17093420.gif">
+            <div class="thik-content">
+              <span class="thikness-size" id="thikness-size">(8 inch Thickness)</span>
+              <p class="m-0">Best if the sleepers weighs between than <span id="thikness-weight">65 kg - 80 kg</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane container p-0" id="tab-custom" style="display:none;">
+          <h6>Dimension (in inches)</h6>
+          <div class="row m-0">
+            <div class="length col-md-6 ps-0 badge-div position-relative mt-4">
+              <input type="number" id="lengthInput" class="form-control text-center" placeholder="Enter Length">
+              <div class="badge-input">Length</div>
+              <small id="lengthError" class="text-danger d-none"></small>
+            </div>
+            <div class="breadth col-md-6 ps-0 badge-div position-relative mt-4">
+              <input type="number" id="breadthInput" class="form-control text-center" placeholder="Enter Breadth">
+              <div class="badge-input">Breadth</div>
+              <small id="breadthError" class="text-danger d-none"></small>
+            </div>
+          </div>
+
+          <div id="input-tab-con" class="mt-4" style="display:none;">
+            <h6>Thickness</h6>
+            <div class="d-flex flex-wrap gap-2">
+              <button class="option-btn">6</button>
+              <button class="option-btn active">10</button>
+            </div>
+            <div class="mt-3 thikness-sec">
+              <img src="https://cdn-icons-gif.flaticon.com/17093/17093420.gif">
+              <div class="thik-content">
+                <span class="thikness-size" id="thikness-size">(8 inch Thickness)</span>
+                <p class="m-0">Best if the sleepers weighs between <span id="thikness-weight">65 kg - 80 kg</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="confirm-btn mt-3">Confirm Variant</button>
+  </div>
+
+  <script>
+    // Tab switching functionality
+    function setupTabSwitching() {
+      document.querySelectorAll('#sizeTabs .option-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('#sizeTabs .option-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+
+          document.querySelectorAll('#tabContents .tab-pane').forEach(content => {
+            content.style.display = 'none';
+          });
+
+          const targetId = this.getAttribute('data-target');
+          document.getElementById(targetId).style.display = 'block';
+        });
+      });
+
+      document.querySelectorAll('#tabContents .tab-pane').forEach(tabPane => {
+        tabPane.querySelectorAll('.d-flex > .option-btn').forEach(optionBtn => {
+          optionBtn.addEventListener('click', function() {
+            const group = this.parentElement;
+            group.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+          });
+        });
+      });
+    }
+
+    // Input validation for custom tab
+    function setupCustomInputValidation() {
+      const lengthField = document.getElementById("lengthInput");
+      const breadthField = document.getElementById("breadthInput");
+      const lengthMsg = document.getElementById("lengthError");
+      const breadthMsg = document.getElementById("breadthError");
+      const thicknessSection = document.getElementById("input-tab-con");
+
+      function validateInput(inputElement, errorElement, fieldName) {
+        const value = parseFloat(inputElement.value);
+        let isValid = false;
+
+        if (inputElement.value === "" || value < 18) {
+          errorElement.textContent = `Please enter a ${fieldName} greater than or equal to 18 inches`;
+          errorElement.classList.remove("d-none");
+          inputElement.classList.add("error");
+        } else if (value > 90) {
+          errorElement.textContent = `Please enter a ${fieldName} lesser than or equal to 90 inches`;
+          errorElement.classList.remove("d-none");
+          inputElement.classList.add("error");
+        } else {
+          errorElement.classList.add("d-none");
+          inputElement.classList.remove("error");
+          isValid = true;
+        }
+        return isValid;
+      }
+
+      function checkValidation() {
+        const lengthValid = lengthMsg.classList.contains("d-none");
+        const breadthValid = breadthMsg.classList.contains("d-none");
+
+        if (!lengthValid || !breadthValid) {
+          thicknessSection.style.display = "none";
+        } else if (lengthField.value && breadthField.value && lengthValid && breadthValid) {
+          thicknessSection.style.display = "block";
+        }
+      }
+
+      lengthField.addEventListener("input", () => {
+        validateInput(lengthField, lengthMsg, "length");
+        checkValidation();
+      });
+
+      breadthField.addEventListener("input", () => {
+        validateInput(breadthField, breadthMsg, "breadth");
+        checkValidation();
+      });
+    }
+
+    // Modal functionality
+    function initModal() {
+      const modalContainer = document.querySelector('.variant-modal');
+      const modalBackground = document.querySelector('.modal-backdrop');
+      const modalTrigger = document.querySelector('.trigger-modal');
+      const modalCloseButton = document.querySelector('.modal-close');
+
+      function showModal() {
+        modalContainer.style.display = 'block';
+        modalBackground.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function hideModal() {
+        modalContainer.style.display = 'none';
+        modalBackground.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+
+      modalTrigger.addEventListener('click', showModal);
+      modalCloseButton.addEventListener('click', hideModal);
+      modalBackground.addEventListener('click', hideModal);
+    }
+
+    // Initialize all functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      setupTabSwitching();
+      setupCustomInputValidation();
+      initModal();
+    });
+  </script>
+</body>
+</html>
